@@ -1,82 +1,63 @@
 import { NotFound } from 'httperrors';
-import Chapter from '../../../infrastructure/schemas/chapter.schema';
 import Confession from '../../../infrastructure/schemas/confession.schema';
 import composeController from '../../../infrastructure/helpers/compose-controller';
 
 class ChapterController {
   static list(req, res, next) {
-    return Chapter.find()
-      .then((chapters) => {
-        res.status(200).responseComposer(chapters);
+    return Confession.find()
+      .then((confessions) => {
+        res.status(200).responseComposer(confessions);
       });
   }
 
   static show(req, res, next) {
-    return Chapter.findById(req.params.id)
-      .then((chapter) => {
-        if (!chapter) {
-          return next(new NotFound(`No Chapter with id [${req.params.id}] was found`));
+    return Confession.findById(req.params.id)
+      .then((confession) => {
+        if (!confession) {
+          return next(new NotFound(`No Confession with id [${req.params.id}] was found`));
         }
 
-        res.status(200).responseComposer(chapter);
+        res.status(200).responseComposer(confession);
       });
   }
 
-  static async create(req, res, next) {
-    const confession = await Confession.findById(req.body.confession.confession_id);
+  static create(req, res, next) {
 
-    const chapter = new Chapter({
-      title: req.body.title,
-      order: req.body.order,
-      confession: {
-        confession_id: confession._id,
-        title: confession.title,
-      }
+    const chapter = {
+      name: req.body.name,
+      order: req.body.order
+    };
+
+    return Confession.findByIdAndUpdate(
+      { _id: req.body.confession_id },
+      {
+        $push: {'chapters': chapter }
+      },
+      { runValidators: true }
+    )
+    .then((confession) => {
+      res.status(200).responseComposer(confession);
     });
 
-    const error = chapter.validateSync();
-
-    if (error) {
-      return res.status(422).send({
-        success: false,
-        data: error.errors,
-        message: error.toString(),
-      });
-
-    }
-
-    return chapter.save()
-      .then(async (chapter) => {
-
-        const confessionChapter = [{
-          _id: chapter._id,
-          title: chapter.title,
-          order: chapter.order
-        }];
-
-        await Confession.updateOne(
-          { _id: confession._id },
-          { $push: { chapters: confessionChapter } },
-          { runValidators: true }
-        );
-
-        res.status(200).responseComposer(chapter);
+    return confession.save()
+      .then((confession) => {
+        res.status(200).responseComposer(confession);
       });
   }
 
   static update(req, res, next) {
-    return Chapter.updateOne(
+    return Confession.updateOne(
       { _id: req.params.id },
       req.body,
       { runValidators: true }
     )
-      .then((chapter) => {
-        res.status(200).responseComposer(chapter);
+      .then((confession) => {
+        res.status(200).responseComposer(confession);
       })
   }
 
   static delete(req, res, next) {
-    return Chapter.deleteOne({ _id: req.params.id })
+    return Confession.deleteOne({ _id: req.params.id })
       .then(() => {
         res.status(204).send();
       });

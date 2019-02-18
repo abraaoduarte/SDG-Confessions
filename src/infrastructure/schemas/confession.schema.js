@@ -10,14 +10,17 @@ const Confession = new mongoose.Schema({
     ],
   },
   chapters:[{
-    _id: ObjectId,
-    title: String,
+    id: ObjectId,
+    name: String,
     order: Number,
     paragraphs:[{
-      _id: ObjectId,
       content: String,
       biblical_references: String,
       order: Number,
+      comments: [{
+        text: String,
+        user_id: Number
+      }]
     }],
   }],
   active: {
