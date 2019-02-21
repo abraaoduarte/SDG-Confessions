@@ -22,6 +22,9 @@ app.engine('hbs', hbs({
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/resources/views/'));
+app.use('/public', express.static(path.join(__dirname, '../public')));
+
+console.log(express.static('../public'));
 
 
 app.use(bodyParser.urlencoded({
