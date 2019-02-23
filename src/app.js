@@ -1,4 +1,6 @@
 import express from 'express';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import hbs  from 'express-handlebars';
 import path  from 'path';
 import dotenv from 'dotenv';
@@ -24,9 +26,6 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/resources/views/'));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
-console.log(express.static('../public'));
-
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -38,11 +37,16 @@ mongoose.connect('mongodb://localhost:27017/sdg-confession', {
   .then(db => console.log('db connected'))
   .catch(err => console.log(err));
 
-
+app.use(cookieParser());
+app.use(session({
+  secret: 'work hard',
+  resave: true,
+  saveUninitialized: false
+}));
 app.use(bodyParser.json());
 app.use(apiResponseHelper);
 app.use('/api/', api);
-app.use('/admin/', admin);
+app.use('/', admin);
 
 app.listen(3000, async() => {
   console.log('Server listening on port: 127.0.0.1:3000');

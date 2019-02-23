@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { NotFound } from 'httperrors';
 import User from '../../../infrastructure/schemas/user.schema';
 import composeController from '../../../infrastructure/helpers/compose-controller';
@@ -22,8 +23,12 @@ class UserController {
   }
 
   static create(req, res, next) {
+    const hash = bcrypt.hashSync(req.body.password, 10);
+
     const user = new User({
       name: req.body.name,
+      password: hash,
+      email: req.body.email
     });
 
     const error = user.validateSync();

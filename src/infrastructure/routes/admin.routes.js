@@ -1,8 +1,10 @@
 import express from 'express';
+import login from '../../application/admin/login/login.routes';
+import auth from '../../application/admin/auth/auth.routes';
+
 let router = express.Router();
 
-router.get('/', function (req, res) {
-  res.render('home', {layout: 'layout'});
-});
+router.use('/login', login);
+router.use('/auth', auth);
 
 export default router;
