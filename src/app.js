@@ -6,6 +6,8 @@ import path  from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import connectMongo from 'connect-mongo';
+
 
 import api from './infrastructure/routes/api.routes';
 import admin from './infrastructure/routes/admin.routes';
@@ -37,11 +39,17 @@ mongoose.connect('mongodb://localhost:27017/sdg-confession', {
   .then(db => console.log('db connected'))
   .catch(err => console.log(err));
 
+const db = mongoose.connection;
+const MongoStore = connectMongo(session);
+
 app.use(cookieParser());
 app.use(session({
   secret: 'work hard',
   resave: true,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: db
+  })
 }));
 app.use(bodyParser.json());
 app.use(apiResponseHelper);

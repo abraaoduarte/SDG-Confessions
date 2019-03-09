@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { has } from 'ramda';
 import User from '../../../infrastructure/schemas/user.schema';
 
 class AuthController {
@@ -6,18 +7,45 @@ class AuthController {
 
     return User.findOne({ email: req.body.email })
       .then((user) => {
-
-        if (bcrypt.compareSync(req.body.password, user.password)) {
-          return res.send('Você conseguiu, você venceu!');
+        if (!user) {
+          return res.send('Usuário não encontrado!');
         }
 
-        res.send('Senha incorreta');
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+          AuthController.createSession(req, user);
+
+          return res.redirect('/home');
+        }
+
+        return res.send('Senha incorreta');
       })
       .catch((error) => {
-        res.send('Usuário não encontrado!');
+        return res.send(`Um erro ocorreu! ${error.message}`);
       });
+  }
+
+  static createSession(req, user) {
+    return req.session.user = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      admin: user.admin,
+      active: user.active,
+    };
+  }
+
+  static isLogged (req, res, next) {
+
+    if (has('session', req) && has('user', req.session)) {
+      return User.findOne({ email: req.body.email })
+        .then(() => next())
+        .catch(() => res.redirect('/login'));
+    }
+
+    return res.redirect('/login');
 
   }
+
 }
 
 export default AuthController;
