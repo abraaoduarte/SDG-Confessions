@@ -8,16 +8,16 @@ class AuthController {
     return User.findOne({ email: req.body.email })
       .then((user) => {
         if (!user) {
-          return res.send('Usuário não encontrado!');
+          return res.redirect('/login');
         }
 
         if (bcrypt.compareSync(req.body.password, user.password)) {
           AuthController.createSession(req, user);
-
+          console.log('teste: ');
           return res.redirect('/home');
         }
 
-        return res.send('Senha incorreta');
+        return res.redirect('/login');
       })
       .catch((error) => {
         return res.send(`Um erro ocorreu! ${error.message}`);
@@ -44,6 +44,12 @@ class AuthController {
 
     return res.redirect('/login');
 
+  }
+
+  static logout (req, res, next) {
+    req.session.destroy();
+
+    return res.redirect('/login');
   }
 
 }
