@@ -3,7 +3,7 @@ import Auth from './auth.controller';
 
 let router = express.Router();
 
-router.post('/', Auth.authetication);
-router.get('/logout', Auth.logout);
+router.post('/', Auth.authetication.bind(Auth));
+router.get('/logout', Auth.logout.bind(Auth));
 
 module.exports = router;

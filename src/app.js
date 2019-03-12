@@ -11,6 +11,7 @@ import connectMongo from 'connect-mongo';
 
 import api from './infrastructure/routes/api.routes';
 import admin from './infrastructure/routes/admin.routes';
+import login from './infrastructure/routes/login.routes';
 import apiResponseHelper from './infrastructure/middlewares/api-response-helper';
 
 dotenv.load();
@@ -26,7 +27,7 @@ app.engine('hbs', hbs({
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/resources/views/'));
-app.use('/public', express.static(path.join(__dirname, '../public')));
+app.use('/public', express.static(path.resolve('public')));
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -54,7 +55,8 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(apiResponseHelper);
 app.use('/api/', api);
-app.use('/', admin);
+app.use('/', login);
+app.use('/admin', admin);
 
 app.listen(3000, async() => {
   console.log('Server listening on port: 127.0.0.1:3000');

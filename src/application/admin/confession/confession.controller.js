@@ -2,7 +2,7 @@ import Confession from '../../../infrastructure/schemas/confession.schema';
 
 class ConfessionController {
   static list(req, res, next) {
-    res.render('home');
+    res.render('confissoes/index');
   }
 }
 
