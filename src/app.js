@@ -13,6 +13,7 @@ import api from './infrastructure/routes/api.routes';
 import admin from './infrastructure/routes/admin.routes';
 import login from './infrastructure/routes/login.routes';
 import apiResponseHelper from './infrastructure/middlewares/api-response-helper';
+import helperTeste from './infrastructure/helpers/helpers-handlebars.js';
 
 dotenv.load();
 const app = express();
@@ -23,6 +24,7 @@ app.engine('hbs', hbs({
   partialsDir: path.join(__dirname, '/resources/views/partials'),
   layoutsDir: path.join(__dirname, '/resources/views/layouts'),
   extname: '.hbs',
+  helpers: helperTeste,
   defaultLayout: 'layout',
 }));
 app.set('view engine', 'hbs');

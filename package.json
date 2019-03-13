@@ -17,6 +17,7 @@
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
+    "handlebars-helpers": "^0.10.0",
     "helmet": "^3.15.1",
     "httperrors": "^2.3.0",
     "moment": "^2.23.0",

@@ -5,7 +5,7 @@ class LoginController {
     //req.session.destroy();
 
     if (has('session', req) && has('user', req.session))
-      return res.redirect('/home');
+      return res.redirect('/admin/home');
 
     res.render('login', {
       layout: false
