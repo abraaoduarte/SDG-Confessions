@@ -10,12 +10,25 @@
                 </h5>
             </div>
             <div class="col-md-6 text-right">
-                <a href="/admin/confissoes/create" class="btn btn-primary">
+                <a href="/admin/confissoes/create" class="btn btn-fill btn-primary">
                     Adicionar
                 </a>
             </div>
         </div>
         <div class="clearfix"></div><br>
+        {{#if flash.info}}
+            <div class="alert alert-success">
+                <button type="button" aria-hidden="true" class="close">×</button>
+                <span>{{flash.info }}</span>
+            </div>
+        {{/if}}
+
+        {{#if flash.error}}
+            <div class="alert alert-danger">
+                <button type="button" aria-hidden="true" class="close">×</button>
+                <span>{{flash.error }}</span>
+            </div>
+        {{/if}}
         <div class="card">
             <div class="header">
                 <h4 class="title">Confissões & Categorias</h4>
@@ -39,12 +52,23 @@
                             <td>{{ formatData updated_at format="DD/MM/YYYY" }}</td>
                             <td width="80">
                                 <div class="btn-group">
-                                    <a href="#" class="btn btn-warning btn-xs" title="Editar">
+                                    <a
+                                        href="/admin/confissoes/edit/{{ this.id }}"
+                                        class="btn btn-warning btn-fill btn-xs"
+                                        title="Editar"
+                                    >
                                         <i class="pe-7s-note"></i>
                                     </a>
-                                    <a href="#" class="btn btn-danger btn-xs" title="Deletar">
-                                        <i class="pe-7s-trash"></i>
-                                    </a>
+                                    <form
+                                        method="POST"
+                                        style="display: inline;"
+                                        action="/admin/confissoes/delete/{{ this.id }}?_method=DELETE"
+                                    >
+                                        <button class="btn btn-danger btn-xs btn-fill">
+                                            <i class="pe-7s-trash"></i>
+                                        </button>
+                                    </form>
+
                                 </div>
                             </td>
                         </tr>

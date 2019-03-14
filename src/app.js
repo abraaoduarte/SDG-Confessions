@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
 import hbs  from 'express-handlebars';
 import path  from 'path';
@@ -7,6 +8,8 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import connectMongo from 'connect-mongo';
+import flash from 'express-flash-2';
+
 
 
 import api from './infrastructure/routes/api.routes';
@@ -34,6 +37,8 @@ app.use('/public', express.static(path.resolve('public')));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.use(methodOverride('X-HTTP-Method-Override'));
+app.use(methodOverride('_method'))
 
 mongoose.set('useFindAndModify', false);
 mongoose.connect('mongodb://localhost:27017/sdg-confession', {
@@ -54,6 +59,8 @@ app.use(session({
     mongooseConnection: db
   })
 }));
+
+app.use(flash());
 app.use(bodyParser.json());
 app.use(apiResponseHelper);
 app.use('/api/', api);
