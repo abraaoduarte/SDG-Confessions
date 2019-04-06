@@ -147,6 +147,12 @@
 
 <div class="container">
     <div class="card card-container">
+        {{#if flash.error}}
+            <div class="alert alert-danger">
+                <button type="button" aria-hidden="true" class="close">×</button>
+                <span>{{flash.error }}</span>
+            </div>
+        {{/if}}
         <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
         <form class="form-signin" action="/auth" method="post">
             <span id="reauth-email" class="reauth-email"></span>

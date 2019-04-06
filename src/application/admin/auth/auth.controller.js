@@ -8,6 +8,8 @@ const authetication = () => async (req, res) => {
   return User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
+        res.flash('error', 'Usuário não encontrado!')
+
         return res.redirect('/login');
       }
       if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -15,6 +17,8 @@ const authetication = () => async (req, res) => {
 
         return res.redirect('/admin/home');
       }
+
+      res.flash('error', 'Senha incorreta!')
 
       return res.redirect('/login');
     })
