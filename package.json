@@ -45,6 +45,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
+    "node-notifier": "^5.4.0",
     "nodemon": "^1.18.9"
   }
 }

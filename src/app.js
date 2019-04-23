@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import connectMongo from 'connect-mongo';
 import flash from 'express-flash-2';
+import notifier from 'node-notifier';
 
 
 
@@ -16,7 +17,7 @@ import api from './infrastructure/routes/api.routes';
 import admin from './infrastructure/routes/admin.routes';
 import login from './infrastructure/routes/login.routes';
 import apiResponseHelper from './infrastructure/middlewares/api-response-helper';
-import helperTeste from './infrastructure/helpers/helpers-handlebars.js';
+import helpers from './infrastructure/helpers/helpers-handlebars.js';
 
 dotenv.load();
 const app = express();
@@ -27,7 +28,7 @@ app.engine('hbs', hbs({
   partialsDir: path.join(__dirname, '/resources/views/partials'),
   layoutsDir: path.join(__dirname, '/resources/views/layouts'),
   extname: '.hbs',
-  helpers: helperTeste,
+  helpers: helpers,
   defaultLayout: 'layout',
 }));
 app.set('view engine', 'hbs');
@@ -69,5 +70,11 @@ app.use('/admin', admin);
 
 app.listen(3000, async() => {
   console.log('Server listening on port: 127.0.0.1:3000');
+
+  notifier.notify({
+    title: 'Server Start',
+    message: 'Server listening on port: 127.0.0.1:3000!'
+  });
+
   console.log(`ENV: ${app.get('env')}`);
 });
