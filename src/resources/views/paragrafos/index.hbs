@@ -37,12 +37,22 @@
         <div class="card">
             <div class="header">
                 <form method="GET" class="form-inline" style="padding: 10px;">
-                    <select name="confession_id" id="confession_id" class="form-control">
+                    <select name="confession_id" id="confession_id" class="form-control js-confessions">
                         <option value="">Escolha uma confissão</option>
-                        <option value="">Escolha uma confissão</option>
+                        {{#each confessions}}
+                            <option
+                                value="{{ this.id }}"
+                                {{ optionSelected this.id ../confession.id }}
+                            >
 
+                                {{ this.title }}
+                            </option>
+                        {{/each}}
                     </select>
-                    <button class="btn btn-fill btn-success">Buscar</button>
+                    <select name="chapter_id" id="chapter_id" class="form-control js-chapter-id">
+                        <option value="">Escolha uma capítulo</option>
+                    </select>
+                    <button class="btn btn-fill btn-success js-button-search" disabled>Buscar</button>
                 </form>
                 <div class="clearfix"></div>
                 {{#if confession}}

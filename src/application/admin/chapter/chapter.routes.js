@@ -4,6 +4,7 @@ import Chapter from './chapter.controller';
 let router = express.Router();
 
 router.get('/', Chapter.list);
+router.get('/search-chapter-by-confession/:confession_id', Chapter.searchChapterByConfession);
 router.get('/create/:id?', Chapter.create);
 router.get('/edit/:confession_id/:chapter_id', Chapter.edit);
 router.put('/update/:id', Chapter.update);

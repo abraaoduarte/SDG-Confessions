@@ -42,7 +42,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(methodOverride('_method'))
 
 mongoose.set('useFindAndModify', false);
-mongoose.connect('mongodb://localhost:27017/sdg-confession', {
+mongoose.connect('mongodb://127.0.0.1:27017/sdg-confession', {
   useNewUrlParser: true
 })
   .then(db => console.log('db connected'))

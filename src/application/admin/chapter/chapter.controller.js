@@ -110,13 +110,28 @@ class ChapterController {
 
       res.redirect(`/admin/capitulos/index?id=${req.body.confession_id}`);
     });
-    /*
-    return Confession.deleteOne({ _id: req.params.id })
-      .then(() => {
-        res.flash('error', 'Categoria apagada com sucesso!')
+  }
 
-        return res.redirect('/admin/confissoes');
-      });*/
+  static async searchChapterByConfession(req, res) {
+    await Confession.find({
+      active: true,
+      _id: req.params.confession_id
+    })
+    .then(async (confession) => {
+      const chapters = await head(confession).chapters.map((chapter) => {
+        return [
+          chapter.name,
+          chapter._id
+        ];
+      });
+
+      return res.json({
+        data: chapters
+      });
+    })
+    .catch((error) => {
+
+    });
   }
 }
 
